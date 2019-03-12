@@ -46,21 +46,23 @@ public class KubernetesDiscoveryClientAutoConfigurationPropertiesTests {
 	@Test
 	public void kubernetesDiscoveryDisabled() throws Exception {
 		setup("spring.cloud.kubernetes.discovery.enabled=false",
-				"spring.cloud.kubernetes.discovery.catalog-services-watch.enabled=false");
+				"spring.cloud.kubernetes.discovery.catalog-services-watch.enabled=false",
+				"spring.cloud.vault.enabled=false");
 		assertThat(this.context.getBeanNamesForType(KubernetesDiscoveryClient.class))
 				.isEmpty();
 	}
 
 	@Test
 	public void kubernetesDiscoveryWhenKubernetesDisabled() throws Exception {
-		setup("spring.cloud.kubernetes.enabled=false");
+		setup("spring.cloud.kubernetes.enabled=false",
+				"spring.cloud.vault.enabled=false");
 		assertThat(this.context.getBeanNamesForType(KubernetesDiscoveryClient.class))
 				.isEmpty();
 	}
 
 	@Test
 	public void kubernetesDiscoveryDefaultEnabled() throws Exception {
-		setup("spring.cloud.kubernetes.enabled=true");
+		setup("spring.cloud.kubernetes.enabled=true", "spring.cloud.vault.enabled=false");
 		assertThat(this.context.getBeanNamesForType(KubernetesDiscoveryClient.class))
 				.hasSize(1);
 	}

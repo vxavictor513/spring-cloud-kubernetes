@@ -30,9 +30,12 @@ public class EnableConfigDiscovery extends AnyNestedCondition {
 
 	@ConditionalOnProperty("spring.cloud.config.discovery.enabled")
 	static class ConfigDiscoveryEnabled {
+
 	}
 
 	@ConditionalOnProperty("spring.cloud.vault.discovery.enabled")
 	static class VaultDiscoveryEnabled {
+
 	}
+
 }

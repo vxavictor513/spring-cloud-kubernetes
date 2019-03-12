@@ -16,8 +16,11 @@
 
 package org.springframework.cloud.kubernetes.discovery;
 
+import java.util.Collections;
+
 import org.junit.After;
 import org.junit.Test;
+
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.cloud.client.DefaultServiceInstance;
@@ -31,12 +34,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.vault.client.VaultEndpointProvider;
 
-import java.util.Collections;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Wai Loon Theng
@@ -58,16 +61,15 @@ public class KubernetesDiscoveryClientVaultClientBootstrapConfigurationTests {
 	@Test
 	public void onWhenRequested() {
 		setup("server.port=7000", "spring.cloud.vault.discovery.enabled=true",
-			"spring.cloud.kubernetes.discovery.enabled=true",
-			"spring.cloud.kubernetes.enabled=true", "spring.application.name=test",
-			"spring.cloud.vault.discovery.service-id=vault");
+				"spring.cloud.kubernetes.discovery.enabled=true",
+				"spring.cloud.kubernetes.enabled=true", "spring.application.name=test",
+				"spring.cloud.vault.discovery.service-id=vault");
 		assertNotNull(this.context.getParent());
 		assertEquals(1, this.context.getParent()
-			.getBeanNamesForType(DiscoveryClient.class).length);
+				.getBeanNamesForType(DiscoveryClient.class).length);
 		DiscoveryClient client = this.context.getParent().getBean(DiscoveryClient.class);
 		verify(client, atLeast(1)).getInstances("vault");
-		VaultEndpointProvider locator = this.context
-			.getBean(VaultEndpointProvider.class);
+		VaultEndpointProvider locator = this.context.getBean(VaultEndpointProvider.class);
 		assertEquals("https://fake:8200", locator.getVaultEndpoint().toString());
 	}
 
@@ -75,15 +77,15 @@ public class KubernetesDiscoveryClientVaultClientBootstrapConfigurationTests {
 		AnnotationConfigApplicationContext parent = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of(env).applyTo(parent);
 		parent.register(UtilAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class, EnvironmentKnobbler.class,
-			KubernetesDiscoveryClientConfigClientBootstrapConfiguration.class,
-			DiscoveryClientVaultBootstrapConfiguration.class);
+				PropertyPlaceholderAutoConfiguration.class, EnvironmentKnobbler.class,
+				KubernetesDiscoveryClientConfigClientBootstrapConfiguration.class,
+				DiscoveryClientVaultBootstrapConfiguration.class);
 		parent.refresh();
 		this.context = new AnnotationConfigApplicationContext();
 		this.context.setParent(parent);
 		this.context.register(PropertyPlaceholderAutoConfiguration.class,
-			KubernetesAutoConfiguration.class,
-			KubernetesDiscoveryClientAutoConfiguration.class);
+				KubernetesAutoConfiguration.class,
+				KubernetesDiscoveryClientAutoConfiguration.class);
 		this.context.refresh();
 	}
 
@@ -93,10 +95,10 @@ public class KubernetesDiscoveryClientVaultClientBootstrapConfigurationTests {
 		@Bean
 		public KubernetesDiscoveryClient kubernetesDiscoveryClient() {
 			KubernetesDiscoveryClient client = mock(KubernetesDiscoveryClient.class);
-			ServiceInstance instance = new DefaultServiceInstance("vault1",
-				"vault", "fake", 8200, false);
+			ServiceInstance instance = new DefaultServiceInstance("vault1", "vault",
+					"fake", 8200, false);
 			given(client.getInstances("vault"))
-				.willReturn(Collections.singletonList(instance));
+					.willReturn(Collections.singletonList(instance));
 			return client;
 		}
 

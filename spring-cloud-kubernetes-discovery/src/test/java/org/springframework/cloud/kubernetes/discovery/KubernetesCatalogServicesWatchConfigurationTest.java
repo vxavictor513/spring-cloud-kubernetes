@@ -46,19 +46,21 @@ public class KubernetesCatalogServicesWatchConfigurationTest {
 
 	@Test
 	public void kubernetesCatalogWatchDisabled() throws Exception {
-		setup("spring.cloud.kubernetes.discovery.catalog-services-watch.enabled=false");
+		setup("spring.cloud.kubernetes.discovery.catalog-services-watch.enabled=false",
+				"spring.cloud.vault.enabled=false");
 		assertThat(this.context.containsBean("kubernetesCatalogWatch")).isFalse();
 	}
 
 	@Test
 	public void kubernetesCatalogWatchWhenKubernetesDisabled() throws Exception {
-		setup("spring.cloud.kubernetes.enabled=false");
+		setup("spring.cloud.kubernetes.enabled=false",
+				"spring.cloud.vault.enabled=false");
 		assertThat(this.context.containsBean("kubernetesCatalogWatch")).isFalse();
 	}
 
 	@Test
 	public void kubernetesCatalogWatchDefaultEnabled() throws Exception {
-		setup();
+		setup("spring.cloud.vault.enabled=false");
 		assertThat(this.context.containsBean("kubernetesCatalogWatch")).isTrue();
 	}
 
