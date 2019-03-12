@@ -120,6 +120,12 @@
 			<version>${spring-cloud-config.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-vault-config</artifactId>
+			<version>${spring-cloud-vault.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -66,6 +66,7 @@
 		<spring-cloud-commons.version>2.1.1.BUILD-SNAPSHOT</spring-cloud-commons.version>
 		<spring-cloud-netflix.version>2.1.1.BUILD-SNAPSHOT</spring-cloud-netflix.version>
 		<spring-cloud-config.version>2.1.1.BUILD-SNAPSHOT</spring-cloud-config.version>
+		<spring-cloud-vault.version>2.1.1.BUILD-SNAPSHOT</spring-cloud-vault.version>
 
 		<!-- Maven Plugin Versions -->
 		<maven-compiler-plugin.version>3.5</maven-compiler-plugin.version>

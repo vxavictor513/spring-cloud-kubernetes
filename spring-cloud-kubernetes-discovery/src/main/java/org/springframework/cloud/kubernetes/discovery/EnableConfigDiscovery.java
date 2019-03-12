@@ -16,20 +16,23 @@
 
 package org.springframework.cloud.kubernetes.discovery;
 
-import org.springframework.cloud.kubernetes.KubernetesAutoConfiguration;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 /**
- * Bootstrap config for Kubernetes discovery config client.
- *
- * @author Zhanwei Wang
+ * @author Wai Loon Theng
  */
-@Configuration
-@Conditional(EnableConfigDiscovery.class)
-@Import({ KubernetesAutoConfiguration.class,
-		KubernetesDiscoveryClientAutoConfiguration.class })
-public class KubernetesDiscoveryClientConfigClientBootstrapConfiguration {
+public class EnableConfigDiscovery extends AnyNestedCondition {
 
+	public EnableConfigDiscovery() {
+		super(ConfigurationPhase.PARSE_CONFIGURATION);
+	}
+
+	@ConditionalOnProperty("spring.cloud.config.discovery.enabled")
+	static class ConfigDiscoveryEnabled {
+	}
+
+	@ConditionalOnProperty("spring.cloud.vault.discovery.enabled")
+	static class VaultDiscoveryEnabled {
+	}
 }
